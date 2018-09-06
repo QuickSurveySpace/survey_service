@@ -21,6 +21,10 @@ public class Question {
 
     private Integer createUserId;
 
+    private String descp;
+
+    private String content;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +95,21 @@ public class Question {
 
     public void setCreateUserId(Integer createUserId) {
         this.createUserId = createUserId;
+    }
+
+    public String getDescp() {
+        return descp;
+    }
+
+    public void setDescp(String descp) {
+        this.descp = descp;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
