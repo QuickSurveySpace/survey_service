@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="logPrefix" value="database.game"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+
+
+    <plugins>
+        <plugin interceptor="com.youguu.core.dao.StatementInterceptor"/>
+        <plugin interceptor="com.youguu.core.dao.ResultSetInterceptor"/>
+    </plugins>
+
+    <mappers>
+        <!--<mapper resource="mybatis/category_sqlmap.xml" />-->
+        <mapper resource="mybatis/CompanyAreaMapper.xml"/>
+        <mapper resource="mybatis/CompanyDotMapper.xml"/>
+        <mapper resource="mybatis/CompanyMapper.xml"/>
+        <mapper resource="mybatis/FUserBindMapper.xml"/>
+        <mapper resource="mybatis/FUserMapper.xml"/>
+        <mapper resource="mybatis/FUserRoleMapper.xml"/>
+        <mapper resource="mybatis/QuestionAnswerMapper.xml"/>
+        <mapper resource="mybatis/QuestionAppealMapper.xml"/>
+        <mapper resource="mybatis/QuestionAreaMapper.xml"/>
+        <mapper resource="mybatis/QuestionDotMapper.xml"/>
+        <mapper resource="mybatis/QuestionMapper.xml"/>
+    </mappers>
+
+</configuration>

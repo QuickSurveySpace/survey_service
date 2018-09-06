@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Company">
+  <resultMap id="BaseResultMap" type="com.question.pojo.Company">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
+    <result column="banner" jdbcType="VARCHAR" property="banner" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="m_time" jdbcType="TIMESTAMP" property="mTime" />
+    <result column="seq" jdbcType="BIGINT" property="seq" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from company
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.question.pojo.Company">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into company (name, short_name, logo, 
+      banner, image, c_time, 
+      m_time, seq, content
+      )
+    values (#{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, 
+      #{banner,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, 
+      #{mTime,jdbcType=TIMESTAMP}, #{seq,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.question.pojo.Company">
+    update company
+    set name = #{name,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      banner = #{banner,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      c_time = #{cTime,jdbcType=TIMESTAMP},
+      m_time = #{mTime,jdbcType=TIMESTAMP},
+      seq = #{seq,jdbcType=BIGINT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, short_name, logo, banner, image, c_time, m_time, seq, content
+    from company
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, short_name, logo, banner, image, c_time, m_time, seq, content
+    from company
+  </select>
+</mapper>
