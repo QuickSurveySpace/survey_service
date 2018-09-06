@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Company">
-  <resultMap id="BaseResultMap" type="com.question.pojo.Company">
+  <resultMap id="BaseResultMap" type="com.survey.pojo.Company">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="short_name" jdbcType="VARCHAR" property="shortName" />
@@ -17,7 +17,7 @@
     delete from company
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.question.pojo.Company">
+  <insert id="insert" parameterType="com.survey.pojo.Company">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -30,7 +30,7 @@
       #{mTime,jdbcType=TIMESTAMP}, #{seq,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.question.pojo.Company">
+  <update id="updateByPrimaryKey" parameterType="com.survey.pojo.Company">
     update company
     set name = #{name,jdbcType=VARCHAR},
       short_name = #{shortName,jdbcType=VARCHAR},

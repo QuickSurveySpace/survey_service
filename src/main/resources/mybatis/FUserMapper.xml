@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.question.dao.FUserMapper">
-  <resultMap id="BaseResultMap" type="com.question.pojo.FUser">
+<mapper namespace="com.survey.dao.FUserMapper">
+  <resultMap id="BaseResultMap" type="com.survey.pojo.FUser">
     <id column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
@@ -16,7 +16,7 @@
     delete from f_user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.question.pojo.FUser">
+  <insert id="insert" parameterType="com.survey.pojo.FUser">
     insert into f_user (user_id, user_name, user_pwd, 
       name, head_img_url, phone, 
       c_time, m_time, company_id
@@ -26,7 +26,7 @@
       #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, #{companyId,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.question.pojo.FUser">
+  <update id="updateByPrimaryKey" parameterType="com.survey.pojo.FUser">
     update f_user
     set user_name = #{userName,jdbcType=VARCHAR},
       user_pwd = #{userPwd,jdbcType=VARCHAR},
