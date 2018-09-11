@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
-@Configuration("asteroidContextLoader")
+@Configuration("surveyContextLoader")
 @ComponentScan({"com.survey.*"})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass=true)

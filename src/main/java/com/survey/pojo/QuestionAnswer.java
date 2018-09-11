@@ -28,6 +28,8 @@ public class QuestionAnswer {
 
     private Integer createUserId;
 
+    private String content;
+
     public Integer getId() {
         return id;
     }
@@ -122,5 +124,13 @@ public class QuestionAnswer {
 
     public void setCreateUserId(Integer createUserId) {
         this.createUserId = createUserId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

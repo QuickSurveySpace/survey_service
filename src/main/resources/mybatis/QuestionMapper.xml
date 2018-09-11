@@ -1,51 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.survey.dao.QuestionMapper">
-  <resultMap id="BaseResultMap" type="com.survey.pojo.Question">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="company_id" jdbcType="INTEGER" property="companyId" />
-    <result column="complete_num" jdbcType="INTEGER" property="completeNum" />
-    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
-    <result column="m_time" jdbcType="TIMESTAMP" property="mTime" />
-    <result column="s_time" jdbcType="TIMESTAMP" property="sTime" />
-    <result column="e_time" jdbcType="TIMESTAMP" property="eTime" />
-    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from question
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.survey.pojo.Question">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into question (title, company_id, complete_num, 
-      c_time, m_time, s_time, 
-      e_time, create_user_id)
-    values (#{title,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, #{completeNum,jdbcType=INTEGER}, 
-      #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, #{sTime,jdbcType=TIMESTAMP}, 
-      #{eTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.survey.pojo.Question">
-    update question
-    set title = #{title,jdbcType=VARCHAR},
-      company_id = #{companyId,jdbcType=INTEGER},
-      complete_num = #{completeNum,jdbcType=INTEGER},
-      c_time = #{cTime,jdbcType=TIMESTAMP},
-      m_time = #{mTime,jdbcType=TIMESTAMP},
-      s_time = #{sTime,jdbcType=TIMESTAMP},
-      e_time = #{eTime,jdbcType=TIMESTAMP},
-      create_user_id = #{createUserId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id
-    from question
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id
-    from question
-  </select>
+    <resultMap id="BaseResultMap" type="com.survey.pojo.Question">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="complete_num" jdbcType="INTEGER" property="completeNum"/>
+        <result column="c_time" jdbcType="TIMESTAMP" property="cTime"/>
+        <result column="m_time" jdbcType="TIMESTAMP" property="mTime"/>
+        <result column="s_time" jdbcType="TIMESTAMP" property="sTime"/>
+        <result column="e_time" jdbcType="TIMESTAMP" property="eTime"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+    </resultMap>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from question
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.survey.pojo.Question">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into question (title, company_id, complete_num,
+        c_time, m_time, s_time, e_time, create_user_id, descp, content)
+        values (#{title,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, #{completeNum,jdbcType=INTEGER},
+        #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, #{sTime,jdbcType=TIMESTAMP},
+        #{eTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER},#{descp,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.survey.pojo.Question">
+        update question
+        set title = #{title,jdbcType=VARCHAR},
+          company_id = #{companyId,jdbcType=INTEGER},
+          complete_num = #{completeNum,jdbcType=INTEGER},
+          m_time = #{mTime,jdbcType=TIMESTAMP},
+          s_time = #{sTime,jdbcType=TIMESTAMP},
+          e_time = #{eTime,jdbcType=TIMESTAMP},
+          create_user_id = #{createUserId,jdbcType=INTEGER},
+          descp = #{descp,jdbcType=VARCHAR},
+          content = #{content,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id,descp,content
+        from question
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id,descp,content
+        from question
+    </select>
+
+
+    <sql id="sql_count">
+		select count(*)
+	</sql>
+
+    <sql id="sql_where">
+        FROM question
+        <where>
+            <if test="title != null and title != ''">
+                AND title LIKE concat(concat('%',#{title}),'%')
+            </if>
+        </where>
+
+    </sql>
+
+    <sql id="sql_order">
+		order by id desc
+	</sql>
+
+    <select id="findByParams_count" parameterType="java.util.HashMap" resultType="int">
+        <include refid="sql_count" />
+        <include refid="sql_where" />
+    </select>
+    <select id="findByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id,descp,content
+        <include refid="sql_where" />
+        <include refid="sql_order" />
+    </select>
 </mapper>
