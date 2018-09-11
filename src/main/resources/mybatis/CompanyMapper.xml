@@ -13,7 +13,14 @@
     <result column="seq" jdbcType="BIGINT" property="seq" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <sql id="selectCommon">
+
+    SELECT  id, name, short_name, logo, banner, image, c_time, m_time, seq, content
+
+  </sql>
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
     delete from company
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -30,26 +37,53 @@
       #{mTime,jdbcType=TIMESTAMP}, #{seq,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.survey.pojo.Company">
+  <update id="update" parameterType="com.survey.pojo.Company">
     update company
     set name = #{name,jdbcType=VARCHAR},
       short_name = #{shortName,jdbcType=VARCHAR},
       logo = #{logo,jdbcType=VARCHAR},
       banner = #{banner,jdbcType=VARCHAR},
       image = #{image,jdbcType=VARCHAR},
-      c_time = #{cTime,jdbcType=TIMESTAMP},
       m_time = #{mTime,jdbcType=TIMESTAMP},
       seq = #{seq,jdbcType=BIGINT},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, short_name, logo, banner, image, c_time, m_time, seq, content
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <include refid="selectCommon"/>
     from company
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, short_name, logo, banner, image, c_time, m_time, seq, content
+    <include refid="selectCommon"/>
     from company
   </select>
+
+  <!--管理平台使用查询展商-->
+  <sql id="sql_count">
+    select count(*)
+  </sql>
+  <sql id="sql_where">
+    from company
+    <where>
+      <if test="name != null and name != ''">
+        and name LIKE concat(concat('%',#{name}),'%')
+      </if>
+    </where>
+  </sql>
+  <sql id="sql_order">
+    order by id desc
+  </sql>
+
+  <select id="findByParams_count" parameterType="java.util.HashMap" resultType="int">
+    <include refid="sql_count"/>
+    <include refid="sql_where"/>
+  </select>
+  <select id="findByParams" parameterType="java.util.HashMap" resultType="com.survey.pojo.Company">
+    <include refid="selectCommon"/>
+    <include refid="sql_where"/>
+    <include refid="sql_order"/>
+  </select>
+
 </mapper>

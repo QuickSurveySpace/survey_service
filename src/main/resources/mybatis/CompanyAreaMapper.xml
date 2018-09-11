@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.survey.dao.CompanyAreaMapper">
+<mapper namespace="CompanyArea">
   <resultMap id="BaseResultMap" type="com.survey.pojo.CompanyArea">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="company_id" jdbcType="INTEGER" property="companyId" />
@@ -10,7 +10,15 @@
     <result column="m_time" jdbcType="TIMESTAMP" property="mTime" />
     <result column="seq" jdbcType="BIGINT" property="seq" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+  <sql id="selectCommon">
+
+    SELECT  id, company_id, name, banner, c_time, m_time, seq
+
+  </sql>
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
     delete from company_area
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -25,23 +33,64 @@
       #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, #{seq,jdbcType=BIGINT}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.survey.pojo.CompanyArea">
+  <update id="update" parameterType="com.survey.pojo.CompanyArea">
     update company_area
     set company_id = #{companyId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       banner = #{banner,jdbcType=VARCHAR},
-      c_time = #{cTime,jdbcType=TIMESTAMP},
       m_time = #{mTime,jdbcType=TIMESTAMP},
       seq = #{seq,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, company_id, name, banner, c_time, m_time, seq
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <include refid="selectCommon"/>
     from company_area
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, company_id, name, banner, c_time, m_time, seq
+    <include refid="selectCommon"/>
+
     from company_area
   </select>
+
+  <select id="queryByCompanyId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    <include refid="selectCommon"/>
+    from company_area where company_id = #{companyId} order by id
+  </select>
+
+
+  <sql id="sql_count">
+    select count(*)
+  </sql>
+
+  <sql id="sql_where">
+    from company_area
+    <where>
+      <if test="name != null and name != ''">
+        and name LIKE concat(concat('%',#{name}),'%')
+      </if>
+
+      <if test="companyId != null and companyId != 0">
+        and company_id = #{companyId}
+      </if>
+    </where>
+  </sql>
+
+  <sql id="sql_order">
+    order by id desc
+  </sql>
+
+  <select id="findByParams_count" parameterType="java.util.HashMap" resultType="int">
+    <include refid="sql_count"/>
+    <include refid="sql_where"/>
+  </select>
+  <select id="findByParams" parameterType="java.util.HashMap" resultType="com.survey.pojo.CompanyArea">
+    <include refid="selectCommon"/>
+    <include refid="sql_where"/>
+    <include refid="sql_order"/>
+  </select>
+
+
+
+
 </mapper>

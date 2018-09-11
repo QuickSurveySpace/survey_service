@@ -72,4 +72,17 @@ public class CompanyArea {
     public void setSeq(Long seq) {
         this.seq = seq;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyArea{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", name='" + name + '\'' +
+                ", banner='" + banner + '\'' +
+                ", cTime=" + cTime +
+                ", mTime=" + mTime +
+                ", seq=" + seq +
+                '}';
+    }
 }
