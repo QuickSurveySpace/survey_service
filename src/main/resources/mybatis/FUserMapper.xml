@@ -17,13 +17,23 @@
 
   <sql id="selectCommon">
 
-    select user_id, user_name, user_pwd, name, head_img_url, phone, c_time, m_time, company_id , role , role_id
+    select a.user_id,
+            a.user_name,
+            a.user_pwd,
+            a.name,
+            a.head_img_url,
+            a.phone,
+            a.c_time,
+            a.m_time,
+            a.company_id ,
+            a.role ,
+            a.role_id
 
   </sql>
 
 
   <delete id="delete" parameterType="java.lang.Integer">
-    delete from f_user
+    delete from f_user a
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
 
@@ -59,14 +69,14 @@
 
   <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <include refid="selectCommon"/>
-    from f_user
+    from f_user a
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
 
 
   <select id="checkPwd" parameterType="map" resultMap="BaseResultMap">
     <include refid="selectCommon"/>
-    from f_user
+    from f_user a
     where (user_name = #{userName} or phone=#{phone}) and user_pwd = #{userPwd}
   </select>
 
@@ -76,7 +86,7 @@
     select count(*)
   </sql>
   <sql id="sql_where">
-    from f_user
+    from f_user a
     <where>
       <if test="name != null and name != ''">
         and name LIKE concat(concat('%',#{name}),'%')

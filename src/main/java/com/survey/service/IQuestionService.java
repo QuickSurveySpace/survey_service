@@ -12,9 +12,7 @@ public interface IQuestionService {
 
     Question selectByPrimaryKey(Integer id);
 
-    List<Question> selectAll();
 
     int updateByPrimaryKey(Question record);
 
-    PageHolder<Question> pageQueryQuestion(String title, int pageIndex, int pageSize);
 }

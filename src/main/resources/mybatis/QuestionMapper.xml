@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.survey.dao.QuestionMapper">
+<mapper namespace="Question">
     <resultMap id="BaseResultMap" type="com.survey.pojo.Question">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -12,6 +12,25 @@
         <result column="e_time" jdbcType="TIMESTAMP" property="eTime"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
     </resultMap>
+
+
+    <sql id="selectCommon">
+
+        select a.id,
+                a.title,
+                a.company_id,
+                a.complete_num,
+                a.c_time,
+                a.m_time,
+                a.s_time,
+                a.e_time,
+                a.create_user_id,
+                a.descp,
+                a.content
+
+    </sql>
+
+
 
     <delete id="delete" parameterType="java.lang.Integer">
         delete from question
@@ -44,8 +63,8 @@
     </update>
 
     <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id,descp,content
-        from question
+        <include refid="selectCommon"/>
+        from question a
         where id = #{id,jdbcType=INTEGER}
     </select>
 
@@ -60,11 +79,31 @@
 	</sql>
 
     <sql id="sql_where">
-        FROM question
+        FROM question a
         <where>
+
+            <if test="lastId != null  and lastId != 0">
+                <![CDATA[
+					AND a.id < #{lastId}
+				]]>
+            </if>
+
             <if test="title != null and title != ''">
                 AND title LIKE concat(concat('%',#{title}),'%')
             </if>
+
+            <if test="companyId != null and companyId != 0">
+                and company_id = #{companyId}
+            </if>
+
+            <if test="createUserId != null and createUserId != 0">
+                and create_user_id = #{createUserId}
+            </if>
+
+            <if test="areaId != null and areaId != 0">
+                and id in (select question_id from question_area where area_id = #{areaId})
+            </if>
+
         </where>
 
     </sql>
@@ -78,8 +117,17 @@
         <include refid="sql_where" />
     </select>
     <select id="findByParams" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-        select id, title, company_id, complete_num, c_time, m_time, s_time, e_time, create_user_id,descp,content
+        <include refid="selectCommon"/>
         <include refid="sql_where" />
         <include refid="sql_order" />
     </select>
+
+
+    <select id="listQuestion" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        <include refid="selectCommon"/>
+        <include refid="sql_where" />
+        <include refid="sql_order" />
+        limit 0 , #{num}
+    </select>
+
 </mapper>

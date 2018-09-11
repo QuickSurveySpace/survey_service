@@ -1,6 +1,7 @@
 package com.survey.dao;
 
 import com.survey.pojo.Question;
+import com.survey.pojo.query.QuestionQuery;
 import com.youguu.core.util.PageHolder;
 
 import java.util.List;
@@ -8,13 +9,13 @@ import java.util.List;
 public interface QuestionMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Question record);
+    int insertQuestion(Question record);
 
     Question selectByPrimaryKey(Integer id);
 
-    List<Question> selectAll();
-
     int updateByPrimaryKey(Question record);
 
-    PageHolder<Question> pageQueryQuestion(String title, int pageIndex, int pageSize);
+    PageHolder<Question> pageQueryQuestion(QuestionQuery query);
+
+    List<Question> listQuestion(QuestionQuery query);
 }

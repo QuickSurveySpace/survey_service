@@ -7,9 +7,9 @@ public class Question {
 
     private String title;
 
-    private Integer companyId;
+    private int companyId;
 
-    private Integer completeNum;
+    private int completeNum;
 
     private Date cTime;
 
@@ -19,13 +19,13 @@ public class Question {
 
     private Date eTime;
 
-    private Integer createUserId;
+    private int createUserId;
 
     private String descp;
 
     private String content;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -41,7 +41,7 @@ public class Question {
         this.title = title == null ? null : title.trim();
     }
 
-    public Integer getCompanyId() {
+    public int getCompanyId() {
         return companyId;
     }
 
@@ -49,7 +49,7 @@ public class Question {
         this.companyId = companyId;
     }
 
-    public Integer getCompleteNum() {
+    public int getCompleteNum() {
         return completeNum;
     }
 
@@ -89,7 +89,7 @@ public class Question {
         this.eTime = eTime;
     }
 
-    public Integer getCreateUserId() {
+    public int getCreateUserId() {
         return createUserId;
     }
 
@@ -111,5 +111,22 @@ public class Question {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", companyId=" + companyId +
+                ", completeNum=" + completeNum +
+                ", cTime=" + cTime +
+                ", mTime=" + mTime +
+                ", sTime=" + sTime +
+                ", eTime=" + eTime +
+                ", createUserId=" + createUserId +
+                ", descp='" + descp + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }
