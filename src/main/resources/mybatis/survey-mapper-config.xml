@@ -27,7 +27,6 @@
         <mapper resource="mybatis/CompanyMapper.xml"/>
         <mapper resource="mybatis/FUserBindMapper.xml"/>
         <mapper resource="mybatis/FUserMapper.xml"/>
-        <mapper resource="mybatis/FUserRoleMapper.xml"/>
         <mapper resource="mybatis/QuestionAnswerMapper.xml"/>
         <mapper resource="mybatis/QuestionAppealMapper.xml"/>
         <mapper resource="mybatis/QuestionAreaMapper.xml"/>

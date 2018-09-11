@@ -3,6 +3,14 @@ package com.survey.pojo;
 import java.util.Date;
 
 public class FUser {
+
+    public static final int ROLE_PRO = 1 ; //项目经理
+
+    public static final int ROLE_AREA = 2 ; //区域总监
+
+    public static final int ROLE_DOT = 3 ; //店长
+
+
     private Integer userId;
 
     private String userName;
@@ -20,6 +28,10 @@ public class FUser {
     private Date mTime;
 
     private Integer companyId;
+
+    private Integer role;
+
+    private Integer roleId;
 
     public Integer getUserId() {
         return userId;
@@ -91,5 +103,38 @@ public class FUser {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    @Override
+    public String toString() {
+        return "FUser{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userPwd='" + userPwd + '\'' +
+                ", name='" + name + '\'' +
+                ", headImgUrl='" + headImgUrl + '\'' +
+                ", phone='" + phone + '\'' +
+                ", cTime=" + cTime +
+                ", mTime=" + mTime +
+                ", companyId=" + companyId +
+                ", role=" + role +
+                ", roleId=" + roleId +
+                '}';
     }
 }

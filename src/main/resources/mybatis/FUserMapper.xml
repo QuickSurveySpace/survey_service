@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.survey.dao.FUserMapper">
+<mapper namespace="FUser">
   <resultMap id="BaseResultMap" type="com.survey.pojo.FUser">
     <id column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
@@ -11,40 +11,112 @@
     <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
     <result column="m_time" jdbcType="TIMESTAMP" property="mTime" />
     <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+  <sql id="selectCommon">
+
+    select user_id, user_name, user_pwd, name, head_img_url, phone, c_time, m_time, company_id , role , role_id
+
+  </sql>
+
+
+  <delete id="delete" parameterType="java.lang.Integer">
     delete from f_user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.survey.pojo.FUser">
-    insert into f_user (user_id, user_name, user_pwd, 
+    <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
+    insert into f_user ( user_name, user_pwd,
       name, head_img_url, phone, 
-      c_time, m_time, company_id
+      c_time, m_time, company_id,role,role_id
       )
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+    values ( #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, #{companyId,jdbcType=INTEGER}
+      #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, #{companyId,jdbcType=INTEGER},
+      #{role,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.survey.pojo.FUser">
+
+  <update id="update" parameterType="com.survey.pojo.FUser">
     update f_user
     set user_name = #{userName,jdbcType=VARCHAR},
       user_pwd = #{userPwd,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       head_img_url = #{headImgUrl,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      c_time = #{cTime,jdbcType=TIMESTAMP},
       m_time = #{mTime,jdbcType=TIMESTAMP},
-      company_id = #{companyId,jdbcType=INTEGER}
+      company_id = #{companyId,jdbcType=INTEGER},
+      role = #{role,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select user_id, user_name, user_pwd, name, head_img_url, phone, c_time, m_time, company_id
+
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <include refid="selectCommon"/>
     from f_user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select user_id, user_name, user_pwd, name, head_img_url, phone, c_time, m_time, company_id
+
+
+  <select id="checkPwd" parameterType="map" resultMap="BaseResultMap">
+    <include refid="selectCommon"/>
     from f_user
+    where (user_name = #{userName} or phone=#{phone}) and user_pwd = #{userPwd}
   </select>
+
+
+  <!--管理平台使用查询展商-->
+  <sql id="sql_count">
+    select count(*)
+  </sql>
+  <sql id="sql_where">
+    from f_user
+    <where>
+      <if test="name != null and name != ''">
+        and name LIKE concat(concat('%',#{name}),'%')
+      </if>
+
+      <if test="user_name != null and user_name != ''">
+        and user_name = #{userName}
+      </if>
+
+      <if test="phone != null and phone != ''">
+        and phone = #{phone}
+      </if>
+
+      <if test="companyId != null and companyId != 0">
+        and company_id = #{companyId}
+      </if>
+
+      <if test="role != null and role > 0 ">
+        and role = #{role}
+      </if>
+
+      <if test="roleId != null and roleId > 0 ">
+        and role_id = #{roleId}
+      </if>
+
+
+    </where>
+  </sql>
+  <sql id="sql_order">
+    order by user_id desc
+  </sql>
+
+  <select id="findByParams_count" parameterType="java.util.HashMap" resultType="int">
+    <include refid="sql_count"/>
+    <include refid="sql_where"/>
+  </select>
+  <select id="findByParams" parameterType="java.util.HashMap" resultType="com.survey.pojo.FUser">
+    <include refid="selectCommon"/>
+    <include refid="sql_where"/>
+    <include refid="sql_order"/>
+  </select>
+
 </mapper>

@@ -13,6 +13,8 @@ public class CompanyDot {
 
     private String address;
 
+    private String dotCode;
+
     private String tel;
 
     private String banner;
@@ -101,5 +103,30 @@ public class CompanyDot {
 
     public void setSeq(Long seq) {
         this.seq = seq;
+    }
+
+    public String getDotCode() {
+        return dotCode;
+    }
+
+    public void setDotCode(String dotCode) {
+        this.dotCode = dotCode;
+    }
+
+    @Override
+    public String toString() {
+        return "CompanyDot{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", companyAreaId=" + companyAreaId +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", dotCode='" + dotCode + '\'' +
+                ", tel='" + tel + '\'' +
+                ", banner='" + banner + '\'' +
+                ", cTime=" + cTime +
+                ", mTime=" + mTime +
+                ", seq=" + seq +
+                '}';
     }
 }
